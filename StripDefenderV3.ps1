@@ -283,15 +283,15 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
     Remove-File -path "$removeDir\Windows\System32\CodeIntegrity\CiPolicies\Active\*" 
 
     #win11 sec app
-    if ($edition -like '*Windows 11*') {
-        Remove-File -path "$removeDir\Program Files\WindowsApps\Microsoft.SecHealthUI_*"
+    #if ($edition -like '*Windows 11*') {
+    #    Remove-File -path "$removeDir\Program Files\WindowsApps\Microsoft.SecHealthUI_*"
 
 
     }
     else {
 
         #win10 sec app
-        Remove-File -path "$removeDir\Windows\SystemApps\Microsoft.Windows.SecHealthUI_*"
+    #    Remove-File -path "$removeDir\Windows\SystemApps\Microsoft.Windows.SecHealthUI_*"
 
     }
 
