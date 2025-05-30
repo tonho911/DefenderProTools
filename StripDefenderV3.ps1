@@ -375,6 +375,7 @@ Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\DeviceGuard\Scenarios\Credent
 
     Write-Host "Unmounting $edition..."
     dism /unmount-image /mountdir:$removeDir /commit
+
 }
 
 Add-Type -AssemblyName System.Windows.Forms
