@@ -102,6 +102,7 @@ function Remove-File([string]$path) {
 
 }
 
+
 function Disable-Defender($edition) {
     $disableDefendContent = @'
 Reg add "HKLM\OFFLINE_SOFTWARE\Microsoft\Windows Defender Security Center\Notifications" /v "DisableEnhancedNotifications" /t REG_DWORD /d "1" /f >nul 2>&1
@@ -282,16 +283,16 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
     Remove-File -path "$removeDir\Windows\System32\CodeIntegrity\CiPolicies\Active\*" 
 
     #win11 sec app
-    #if ($edition -like '*Windows 11*') {
-    #    Remove-File -path "$removeDir\Program Files\WindowsApps\Microsoft.SecHealthUI_*"
+    if ($edition -like '*Windows 11*') {
+        
 
 
     }
     else {
 
         #win10 sec app
-    #    Remove-File -path "$removeDir\Windows\SystemApps\Microsoft.Windows.SecHealthUI_*"
 
+        
     }
 
     Write-Host 'Disabling Defender and Smart Screen...'
@@ -376,7 +377,9 @@ Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\DeviceGuard\Scenarios\Credent
     Write-Host "Unmounting $edition..."
     dism /unmount-image /mountdir:$removeDir /commit
 
+
 }
+
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
