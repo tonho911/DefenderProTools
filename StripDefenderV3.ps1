@@ -284,14 +284,14 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
 
     #win11 sec app
     if ($edition -like '*Windows 11*') {
-        Remove-File -path "$removeDir\Program Files\WindowsAppsSSS\Microsoft.SecHealthUI_*"
+        Remove-File -path "$removeDir\Program Files\WindowsApps\Microsoft.SecHealthUI_*"
 
 
     }
     else {
 
         #win10 sec app
-        Remove-File -path "$removeDir\Windows\SystemAppsSSS\Microsoft.Windows.SecHealthUI_*"
+        Remove-File -path "$removeDir\Windows\SystemApps\Microsoft.Windows.SecHealthUI_*"
 
     }
 
