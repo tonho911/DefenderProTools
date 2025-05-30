@@ -100,7 +100,7 @@ function Remove-File([string]$path) {
     $command = "Remove-Item -Path '$path' -Recurse -Force"
     Run-Trusted -command $command
 
-}
+#}
 
 
 function Disable-Defender($edition) {
