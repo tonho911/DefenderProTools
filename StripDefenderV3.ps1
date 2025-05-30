@@ -708,16 +708,3 @@ $form.Add_DragDrop({
 
 # Show the form
 $form.ShowDialog() | Out-Null
-
-
-
-
- $packages = dism /image:$removeDir /get-provisionedappxpackages | Select-String 'PackageName :'
-    $packages = $packages -split 'PackageName : ' | Where-Object { $_ }
-    foreach ($package in $packages) {
-        if ($package -like '*SecHealth*') {
-            Write-Host "Removing $package Package..."
-            dism /image:$removeDir /Remove-ProvisionedAppxPackage /PackageName:$package
-        }
-
-    }
