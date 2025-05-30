@@ -100,8 +100,7 @@ function Remove-File([string]$path) {
     $command = "Remove-Item -Path '$path' -Recurse -Force"
     Run-Trusted -command $command
 
-#}
-
+}
 
 function Disable-Defender($edition) {
     $disableDefendContent = @'
@@ -376,10 +375,7 @@ Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Control\DeviceGuard\Scenarios\Credent
 
     Write-Host "Unmounting $edition..."
     dism /unmount-image /mountdir:$removeDir /commit
-
-
 }
-
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
