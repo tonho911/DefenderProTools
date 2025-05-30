@@ -100,7 +100,7 @@ function Remove-File([string]$path) {
     $command = "Remove-Item -Path '$path' -Recurse -Force"
     Run-Trusted -command $command
 
-
+}
 
 
 function Disable-Defender($edition) {
@@ -259,16 +259,7 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
 
     }
 
-    #uninstall sec center app
-    $packages = dism /image:$removeDir /get-provisionedappxpackages | Select-String 'PackageName :'
-    $packages = $packages -split 'PackageName : ' | Where-Object { $_ }
-    foreach ($package in $packages) {
-        if ($package -like '*SecHealth*') {
-            Write-Host "Removing $package Package..."
-            dism /image:$removeDir /Remove-ProvisionedAppxPackage /PackageName:$package
-        }
 
-    }
 
     Write-Host 'Removing Defender Files...'
 
@@ -282,18 +273,7 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
     Remove-File -path "$removeDir\Windows\System32\smartscreen.exe" 
     Remove-File -path "$removeDir\Windows\System32\CodeIntegrity\CiPolicies\Active\*" 
 
-    #win11 sec app
-    if ($edition -like '*Windows 11*') {
-        
 
-
-    }
-    else {
-
-        #win10 sec app
-
-        
-    }
 
     Write-Host 'Disabling Defender and Smart Screen...'
 
@@ -728,3 +708,16 @@ $form.Add_DragDrop({
 
 # Show the form
 $form.ShowDialog() | Out-Null
+
+
+
+
+ $packages = dism /image:$removeDir /get-provisionedappxpackages | Select-String 'PackageName :'
+    $packages = $packages -split 'PackageName : ' | Where-Object { $_ }
+    foreach ($package in $packages) {
+        if ($package -like '*SecHealth*') {
+            Write-Host "Removing $package Package..."
+            dism /image:$removeDir /Remove-ProvisionedAppxPackage /PackageName:$package
+        }
+
+    }
