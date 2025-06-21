@@ -148,7 +148,6 @@ Reg add "HKLM\OFFLINE_SOFTWARE\Policies\Microsoft\Windows Defender\Spynet" /v "S
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\EventLog\System\Microsoft-Antimalware-ShieldProvider" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\EventLog\System\WinDefend" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\MsSecFlt" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
-Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\SecurityHealthService" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\Sense" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\WdBoot" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
 Reg add "HKLM\OFFLINE_SYSTEM\ControlSet001\Services\WdFilter" /v "Start" /t REG_DWORD /d "4" /f >nul 2>&1
@@ -248,28 +247,6 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
     Write-Host "Removing Defender from $edition..."
     Mount-WindowsImage -ImagePath "$tempDir\sources\install.wim" -Index $index -Path $removeDir
 
-    $featureList = dism /image:$removeDir /Get-Features | Select-String -Pattern 'Feature Name : ' -CaseSensitive -SimpleMatch
-    $featureList = $featureList -split 'Feature Name : ' | Where-Object { $_ }
-    foreach ($feature in $featureList) {
-        if ($feature -like '*Defender*') {
-            Write-Host "Removing $feature..."
-            dism /image:$removeDir /Disable-Feature /FeatureName:$feature /Remove /NoRestart
-
-        }
-
-    }
-
-    #uninstall sec center app
-    $packages = dism /image:$removeDir /get-provisionedappxpackages | Select-String 'PackageName :'
-    $packages = $packages -split 'PackageName : ' | Where-Object { $_ }
-    foreach ($package in $packages) {
-        if ($package -like '*SecHealth*') {
-            Write-Host "Removing $package Package..."
-            dism /image:$removeDir /Remove-ProvisionedAppxPackage /PackageName:$package
-        }
-
-    }
-
     Write-Host 'Removing Defender Files...'
 
     Remove-File -path "$removeDir\Program Files\Windows Defender"
@@ -281,19 +258,6 @@ function remove-Defender([String]$folderPath, [String]$edition, [String]$removeD
     Remove-File -path "$removeDir\Windows\System32\SecurityCenter*"
     Remove-File -path "$removeDir\Windows\System32\smartscreen.exe" 
     Remove-File -path "$removeDir\Windows\System32\CodeIntegrity\CiPolicies\Active\*" 
-
-    #win11 sec app
-    if ($edition -like '*Windows 11*') {
-        Remove-File -path "$removeDir\Program Files\WindowsApps\Microsoft.SecHealthUI_*"
-
-
-    }
-    else {
-
-        #win10 sec app
-        Remove-File -path "$removeDir\Windows\SystemApps\Microsoft.Windows.SecHealthUI_*"
-
-    }
 
     Write-Host 'Disabling Defender and Smart Screen...'
 
